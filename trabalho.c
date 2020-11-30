@@ -1,12 +1,13 @@
 #include<stdio.h>
 #include"trabalho.h"
+#include"ex2.h"
+#include <stdlib.h>
+
+EMPRESA empresa;
 
 int trabalho() {
-
-    struct empresa* empresa;
-
     int op;
-
+    empresa.num_edificios = 0;
     do {
         printf("\t\tGestor para a Empresa\n\n");
         printf("Escolha a opcao:\n");
@@ -18,7 +19,7 @@ int trabalho() {
         scanf("%d", &op);
         switch (op) {
         case 1:
-
+            Gestao_Edificios();
             break;
         case 2:
 
