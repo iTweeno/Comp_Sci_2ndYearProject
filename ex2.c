@@ -1,10 +1,7 @@
 #include<stdio.h>
-#include"trabalho.h"
-#include<string.h>
 #include"ex2.h"
-#include <stdbool.h>
+#include"main.h"
 
-bool checkEdificio = false;
 
 int Gestao_Edificios() {
     int op;
@@ -12,24 +9,24 @@ int Gestao_Edificios() {
     do {
         printf("\t\tGestor de edificios\n\n");
         printf("Escolha a opcao:\n");
-        printf("\t1-Listar edificios\n");
-        printf("\t2-Inserir edificio\n");
-        printf("\t3-Remover edificio\n");
+        printf("\t1-Inserir edificio\n");
+        printf("\t2-Inserir estudio\n");
+        printf("\t3-Eliminar edificio\n");
         printf("\t4-Historico de viagens\n");
         printf("\t0-Sair\n");
         scanf("%d", &op);
         switch (op) {
         case 1:
-            listar_edificios();
+            inserir_edificio(&empresa,"Rua s joao 1", 1345);
             break;
         case 2:
-            inserir_edificio();
+            inserir_estudio(&empresa, "Rua s joao 1",1,3);
             break;
         case 3:
-            remover_edificio();
+            remover_edificio(&empresa, "Rua s joao 1");
             break;
         case 4:
-
+            print_edificio(&empresa);
             break;
         case 0:
             break;
@@ -38,54 +35,110 @@ int Gestao_Edificios() {
             printf("Opcao invalida!\n\n");
         }
     } while (op != 0);
+
 };
 
-void listar_edificios() {
-    if (empresa.num_edificios == 0) {
-        printf("Nao ha edificios para listar");
+int inserir_edificio(EMPRESA* empresa,char morada[], int coordenadas) {
+    EDIFICIO* e = (EDIFICIO*)malloc(sizeof(EDIFICIO));
+    e->morada = (char*)malloc(sizeof(char) * (strlen(morada) + 1));
+    strncpy(e->morada, morada, (sizeof(char) * strlen(morada) + 1));
+    e->coordenadas = coordenadas;
+    e->num_estudios = 0;
+    e->next = NULL;
+    e->estudios = (ESTUDIO*)malloc(10 * sizeof(ESTUDIO));;
+
+    if (empresa->num_edificios == 0 || empresa->edificio == NULL) {
+        empresa->edificio = e;
+        empresa->num_edificios++;
+        return;
     }
-    else {
-        for (int i = 0; i < empresa.num_edificios; i++) {
-            printf("Id:%d, Morada:%s, Coordenadas:%s\n", empresa.edificios[i].id, empresa.edificios[i].morada, empresa.edificios[i].coordenadas);
+    EDIFICIO* pprev = NULL;
+    EDIFICIO* pcurrent = empresa->edificio;
+    while (pcurrent != NULL && strcmp(morada, pcurrent->morada) < 0) {
+        pprev = pcurrent;
+        pcurrent = pcurrent->next;
+    }
+    if (pcurrent == empresa->edificio) {
+        e->next = empresa->edificio;
+        empresa->edificio = e;
+        empresa->num_edificios++;
+        return;
+    }
+    e->next = pcurrent;
+    pprev->next = e;
+    empresa->num_edificios++;
+    return;
+};
+
+int remover_edificio(EMPRESA* empresa, char morada[]) {
+    if (empresa->edificio == NULL) {
+        printf("Nao ha edificios\n");
+        return;
+    }
+    EDIFICIO* pprev = NULL, * pcurrent = empresa->edificio;
+    while (pcurrent != NULL && strcmp(morada, pcurrent->morada) != 0) {
+        pprev = pcurrent;
+        pcurrent = pcurrent->next;
+    }
+    if (pcurrent == NULL) {
+        printf("Nao ha edificios com este nome\n");
+        return;
+    }
+    if (empresa->edificio == pcurrent) {
+        empresa->edificio = pcurrent->next;
+        empresa->num_edificios--;
+        free(pcurrent);
+        return;
+    }
+    pprev->next = pcurrent->next;
+    free(pcurrent);
+    empresa->num_edificios--;
+}
+
+int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos) {
+    if (empresa->edificio == NULL) {
+        printf("Nao ha edificios\n");
+        return;
+    }
+    EDIFICIO* pprev = NULL, * pcurrent = empresa->edificio;
+    while (pcurrent != NULL && strcmp(morada, pcurrent->morada) != 0) {
+        pprev = pcurrent;
+        pcurrent = pcurrent->next;
+    }
+    if (pcurrent == NULL) {
+        printf("Nao ha edificios com este nome\n");
+        return;
+    }
+    if (empresa->edificio == pcurrent) {
+        if (empresa->edificio->num_estudios == 10) {
+            return;
         }
+        empresa->edificio->estudios[empresa->edificio->num_estudios].id = id;
+        empresa->edificio->estudios[empresa->edificio->num_estudios].quartos = quartos;
+        empresa->edificio->num_estudios++;
+        return;
     }
-};
+    if (pcurrent->num_estudios == 10) {
+        return;
+    }
+    if (pcurrent->num_estudios == 0) {
+        pcurrent->estudios = (ESTUDIO*)malloc(10 * sizeof(ESTUDIO));
+    }
+    pcurrent->estudios[pcurrent->num_estudios].id = id;
+    pcurrent->estudios[pcurrent->num_estudios].quartos = quartos;
+    pcurrent->num_estudios++;
+    
+}
 
-void inserir_edificio() {
-    int id;
-    char scanmorada[100];
-    char scancoords[100];
-    if (!checkEdificio) {
-        empresa.edificios = (EDIFICIO*)malloc(10 * sizeof(EDIFICIO));
-        checkEdificio = true;
+int print_edificio(EMPRESA* empresa) {
+    if (empresa->edificio == NULL) {
+        printf("Nao ha edificios\n");
+        return;
     }
-    printf("Insira o id:");
-    scanf("%d", &empresa.edificios[empresa.num_edificios].id);
-    printf("Insira a morada:");
-    scanf("%s", &scanmorada);
-    printf("Insira as coordenadas:");
-    scanf("%s", &scancoords);
-    empresa.edificios[empresa.num_edificios].morada = malloc(strlen(scanmorada) + 1);
-    strncpy(empresa.edificios[empresa.num_edificios].morada, scanmorada, strlen(scanmorada) + 1);
-    empresa.edificios[empresa.num_edificios].coordenadas = malloc(strlen(scancoords) + 1);
-    strncpy(empresa.edificios[empresa.num_edificios].coordenadas, scancoords, strlen(scancoords) + 1);
-    empresa.num_edificios++;
-};
-
-void remover_edificio() {
-    if (empresa.num_edificios = 0) {
-        printf("Nao ha edificios para remover");
-    }else {
-        int op1;
-        printf("Insira o id que quer remover");
-        scanf("%d", &op1);
-        for (int i = 0; i < empresa.num_edificios; i++) {
-            if ((strcmp(empresa.edificios[i].id, op1)) == 0) {
-                free(empresa.edificios[i].morada);
-                free(empresa.edificios[i].coordenadas);
-                free(empresa.edificios[i]);
-                empresa.num_edificios--;
-            }
-        }
+    EDIFICIO* pprev = NULL, * pcurrent = empresa->edificio;
+    while (pcurrent != NULL) {
+        printf("Morada: %s | Coordenadas: %d\n", pcurrent->morada, pcurrent->coordenadas);
+        pprev = pcurrent;
+        pcurrent = pcurrent->next;
     }
-};
+}

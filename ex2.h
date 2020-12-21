@@ -1,7 +1,11 @@
-int asd();
+/*#include"main.h"
 
-void inserir_edificio();
+extern int Gestao_Edificios();
 
-void listar_edificios();
+int inserir_edificio(EMPRESA* empresa, char morada[], int coordenadas);
 
-void remover_edificio();
+int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos);
+
+int remover_edificio(EMPRESA* empresa, char morada[]);
+
+int print_edificio(EMPRESA* empresa);*/
