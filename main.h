@@ -1,12 +1,12 @@
 typedef struct cliente {
 	int id;
-	char nome;
+	char* nome;
 	int idade;
-	char email;
+	char* email;
 }CLIENTE;
 
 typedef struct caracteristicas_estudio {
-	int dias_ocupados[100][100];
+	int dias_ocupados;
 	int dias_limpeza;
 	int historico_hospedes;
 	int dias_manutenção;
@@ -22,28 +22,24 @@ typedef struct estudio {
 } ESTUDIO;
 
 typedef struct plataforma {
-	char nome;
-	char estudios;
+	char* nome;
+	char* estudios;
 } PLATAFORMA;
 
 typedef struct edificio {
+	ESTUDIO* estudios; //array
 	int num_estudios;
-	int id;
-	ESTUDIO estudios; //array
 	char* morada;
-	char* coordenadas;
+	int coordenadas;
+	struct edificio * next;
 } EDIFICIO;
 
 typedef struct empresa {
 	int num_edificios;
-	EDIFICIO* edificios; //array
+	EDIFICIO* edificio;
 	PLATAFORMA* plataformas;
 } EMPRESA;
 
 int trabalho();
 
 extern EMPRESA empresa;
-
-extern struct EDIFICIO;
-
-extern int num_edificios;
