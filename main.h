@@ -3,22 +3,27 @@ typedef struct cliente {
 	char* nome;
 	int idade;
 	char* email;
+	int* diasEstadia;
+	struct CLIENTE* next;
 }CLIENTE;
 
-typedef struct caracteristicas_estudio {
-	int dias_ocupados;
-	int dias_limpeza;
-	int historico_hospedes;
-	int dias_manutenção;
-	int faturação;
-	int cliente_id;
+typedef struct dias_ocupados {
+	char* descricao;
+	int dia;
+	struct dias_ocupados* next;
+}DIAS_OCUPADOS;
+
+typedef struct preco {
+	int mes;
 	int preco;
-}CARACTERISTICAS_ESTUDIO;
+}PRECO;
 
 typedef struct estudio {
 	int id;
 	int quartos;
-	CARACTERISTICAS_ESTUDIO caracteristicas_estudio;
+	CLIENTE clientes;
+	DIAS_OCUPADOS dias_ocupados;
+	PRECO* precos;
 } ESTUDIO;
 
 typedef struct plataforma {
