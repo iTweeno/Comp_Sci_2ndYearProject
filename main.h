@@ -9,7 +9,7 @@ typedef struct agenda {
 	int id;
 	int idUser;
 	char* evento;
-	int dia; //array
+	int dia;
 	struct agenda* next;
 }AGENDA;
 
@@ -21,10 +21,10 @@ typedef struct preco {
 typedef struct estudio {
 	int id;
 	int quartos;
-	CLIENTE clientes;
-	AGENDA agenda;
-	PRECO* precos;
-	int tamanho;
+	int tamanho_preco;
+	CLIENTE clientes; //ll
+	AGENDA agenda; //ll
+	PRECO* precos; //arr
 } ESTUDIO;
 
 typedef struct plataforma {
@@ -33,7 +33,8 @@ typedef struct plataforma {
 } PLATAFORMA;
 
 typedef struct edificio {
-	ESTUDIO* estudios; //array
+	int tamanho_estudio;
+	ESTUDIO* estudios; //arr
 	int num_estudios;
 	char* morada;
 	int coordenadas;
@@ -42,7 +43,7 @@ typedef struct edificio {
 
 typedef struct empresa {
 	int num_edificios;
-	EDIFICIO* edificio;
+	EDIFICIO* edificio; //ll
 	PLATAFORMA* plataformas;
 } EMPRESA;
 
