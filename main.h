@@ -2,7 +2,7 @@ typedef struct cliente {
 	int id;
 	char* nome;
 	int idade;
-	struct CLIENTE* next;
+	struct cliente* next;
 }CLIENTE;
 
 typedef struct agenda {
@@ -22,8 +22,10 @@ typedef struct estudio {
 	int id;
 	int quartos;
 	int tamanho_preco;
-	CLIENTE clientes; //ll
-	AGENDA agenda; //ll
+	int num_clientes;
+	int num_precos;
+	CLIENTE* clientes; //ll
+	AGENDA* agenda; //ll
 	PRECO* precos; //arr
 } ESTUDIO;
 
