@@ -2,16 +2,16 @@ typedef struct cliente {
 	int id;
 	char* nome;
 	int idade;
-	char* email;
-	int* diasEstadia;
 	struct CLIENTE* next;
 }CLIENTE;
 
-typedef struct dias_ocupados {
-	char* descricao;
-	int dia;
-	struct dias_ocupados* next;
-}DIAS_OCUPADOS;
+typedef struct agenda {
+	int id;
+	int idUser;
+	char* evento;
+	int dia; //array
+	struct agenda* next;
+}AGENDA;
 
 typedef struct preco {
 	int mes;
@@ -22,8 +22,9 @@ typedef struct estudio {
 	int id;
 	int quartos;
 	CLIENTE clientes;
-	DIAS_OCUPADOS dias_ocupados;
+	AGENDA agenda;
 	PRECO* precos;
+	int tamanho;
 } ESTUDIO;
 
 typedef struct plataforma {
