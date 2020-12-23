@@ -9,7 +9,8 @@ typedef struct agenda {
 	int id;
 	int idUser;
 	char* evento;
-	int dia;
+	int data_inicio;
+	int data_fim;
 	struct agenda* next;
 }AGENDA;
 
@@ -22,8 +23,9 @@ typedef struct estudio {
 	int id;
 	int quartos;
 	int tamanho_preco;
-	int num_clientes;
 	int num_precos;
+	int num_clientes;
+	int num_agendas;
 	CLIENTE* clientes; //ll
 	AGENDA* agenda; //ll
 	PRECO* precos; //arr
