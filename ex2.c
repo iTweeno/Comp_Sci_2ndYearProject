@@ -13,7 +13,7 @@ int Gestao_Edificios() {
         printf("\t2-Inserir estudio\n");
         printf("\t3-Inserir cliente\n");
         printf("\t4-Inserir preco\n");
-        printf("\t5-Print edificios\n");
+        printf("\t5-Inserir Agenda\n");
         printf("\t6-Print estudios\n");
         printf("\t0-Sair\n");
         scanf("%d", &op);
@@ -25,22 +25,46 @@ int Gestao_Edificios() {
             inserir_estudio(&empresa, "Rua s joao 1",1,3);
             break;
         case 3:
-            inserir_cliente(&empresa, "Rua s joao 1", 1, 1, "Joao", 25);
+            inserir_cliente(&empresa, "Rua s joao 1",1, 1, "Joao", 25);
             break;
         case 4:
-            inserir_preco(&empresa, "Rua s joao 1", 1, 3);
+            inserir_preco(&empresa, "Rua s joao 1", 1, 1,10,100);
             break;
         case 5:
-            remover_edificio(&empresa, "Rua s joao 1");
+            remover_edificio(&empresa, "Rua s joao 1", 1345);
             break;
         case 6:
-            remover_estudio(&empresa, "Rua s joao 1",1);
+            remover_estudio(&empresa, "Rua s joao 1", 1);
             break;
         case 7:
-            print_edificios(&empresa, "Rua s joao 1");
+            remover_cliente(&empresa, "Rua s joao 1", 1, 1, "Joao", 25);
             break;
         case 8:
+            remover_preco(&empresa, "Rua s joao 1", 1, 1, 10, 100);
+            break;
+        case 9:
+            editar_edificio(&empresa, "Rua s joao 1");
+            break;
+        case 10:
+            editar_estudio(&empresa, "Rua s joao 1",1);
+            break;
+        case 11:
+            editar_cliente(&empresa, "Rua s joao 1");
+            break;
+        case 12:
+            editar_preco(&empresa, "Rua s joao 1");
+            break;
+        case 13:
+            print_edificios(&empresa, "Rua s joao 1", 1, 1, 10, 100);
+            break;
+        case 14:
             print_estudios(&empresa, "Rua s joao 1");
+            break;
+        case 15:
+            print_clientes(&empresa, "Rua s joao 1", 1);
+            break;
+        case 16:
+            print_precos(&empresa, "Rua s joao 1");
             break;
         case 0:
             break;
@@ -52,14 +76,14 @@ int Gestao_Edificios() {
 
 };
 
-int inserir_edificio(EMPRESA* empresa,char morada[], int coordenadas) {
+int inserir_edificio(EMPRESA* empresa,char morada[], int coordenadas) { //make insertion sort
     EDIFICIO* e = (EDIFICIO*)malloc(sizeof(EDIFICIO));
     e->morada = (char*)malloc(sizeof(char) * (strlen(morada) + 1));
     strncpy(e->morada, morada, (sizeof(char) * strlen(morada) + 1));
     e->coordenadas = coordenadas;
     e->num_estudios = 0;
     e->next = NULL;
-    e->estudios = (ESTUDIO*)malloc(10 * sizeof(ESTUDIO));;
+    e->estudios = (ESTUDIO*)malloc(10 * sizeof(ESTUDIO));
     e->tamanho_estudio = 10;
 
     if (empresa->num_edificios == 0 || empresa->edificio == NULL) {
@@ -85,7 +109,7 @@ int inserir_edificio(EMPRESA* empresa,char morada[], int coordenadas) {
     return;
 };
 
-int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos) {
+int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos) { //change size of arr
     if (empresa->edificio == NULL) {
         printf("Nao ha edificios\n");
         return;
@@ -105,6 +129,11 @@ int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos) {
         }
         empresa->edificio->estudios[empresa->edificio->num_estudios].id = id;
         empresa->edificio->estudios[empresa->edificio->num_estudios].quartos = quartos;
+        empresa->edificio->estudios[empresa->edificio->num_estudios].precos = (PRECO*)malloc(10 * sizeof(PRECO));
+        empresa->edificio->estudios[empresa->edificio->num_estudios].num_precos = 0;
+        empresa->edificio->estudios[empresa->edificio->num_estudios].num_clientes = 0;
+        empresa->edificio->estudios[empresa->edificio->num_estudios].tamanho_preco = 10;
+
         empresa->edificio->num_estudios++;
         return;
     }
@@ -116,7 +145,7 @@ int inserir_estudio(EMPRESA* empresa, char morada[], int id, int quartos) {
     pcurrent->num_estudios++;
 }
 
-int inserir_cliente(EMPRESA* empresa, char morada[], int id, int idCliente, char nome[], int idade) {
+int inserir_cliente(EMPRESA* empresa, char morada[], int id, int idCliente, char nome[], int idade) { //make insertion sort
     CLIENTE* e = (CLIENTE*)malloc(sizeof(CLIENTE));
     e->id = idCliente;
     e->idade = idade;
@@ -145,6 +174,22 @@ int inserir_cliente(EMPRESA* empresa, char morada[], int id, int idCliente, char
                     empresa->edificio->estudios[index].num_clientes++;
                     return;
                 }
+                CLIENTE* pprevcl = NULL;
+                CLIENTE* pcurrentcl = empresa->edificio->estudios[index].clientes;
+                while (pcurrentcl != NULL && strcmp(nome, pcurrentcl->nome) < 0) {
+                    pprevcl = pcurrentcl;
+                    pcurrentcl = pcurrentcl->next;
+                }
+                if (pcurrentcl == empresa->edificio->estudios[index].clientes) {
+                    e->next = empresa->edificio->estudios[index].clientes;
+                    empresa->edificio->estudios[index].clientes = e;
+                    empresa->edificio->estudios[index].num_clientes++;
+                    return;
+                }
+                e->next = pcurrentcl;
+                pprevcl->next = e;
+                empresa->edificio->estudios[index].num_clientes++;
+                return;
 
             }
         }
@@ -158,7 +203,62 @@ int inserir_cliente(EMPRESA* empresa, char morada[], int id, int idCliente, char
                     pcurrent->estudios[index].num_clientes++;
                     return;
                 }
+                CLIENTE* pprevcl = NULL;
+                CLIENTE* pcurrentcl = empresa->edificio->estudios[index].clientes;
+                while (pcurrentcl != NULL && strcmp(nome, pcurrentcl->nome) < 0) {
+                    pprevcl = pcurrentcl;
+                    pcurrentcl = pcurrentcl->next;
+                }
+                if (pcurrent == pcurrent->estudios[index].clientes) {
+                    e->next = pcurrent->estudios[index].clientes;
+                    pcurrent->estudios[index].clientes = e;
+                    pcurrent->estudios[index].num_clientes++;
+                    return;
+                }
+                e->next = pcurrent;
+                pprev->next = e;
+                empresa->edificio->estudios[index].num_clientes++;
+                return;
 
+            }
+        }
+        printf("Estudio nao encontrado");
+    }
+}
+
+int inserir_preco(EMPRESA* empresa, char morada[], int id, int mes, int preco) { //make insertion sort
+    int index;
+    if (empresa->edificio == NULL) {
+        printf("Nao ha edificios\n");
+        return;
+    }
+    EDIFICIO* pprev = NULL, * pcurrent = empresa->edificio;
+    while (pcurrent != NULL && strcmp(morada, pcurrent->morada) != 0) {
+        pprev = pcurrent;
+        pcurrent = pcurrent->next;
+    }
+    if (pcurrent == NULL) {
+        printf("Nao ha edificios com este nome\n");
+        return;
+    }
+    if (empresa->edificio == pcurrent) {
+        for (index = 0; index < empresa->edificio->num_estudios; index++) {
+            if (empresa->edificio->estudios[index].id == id) {
+                    empresa->edificio->estudios[index].precos[empresa->edificio->estudios[index].num_precos].mes = mes;
+                    empresa->edificio->estudios[index].precos[empresa->edificio->estudios[index].num_precos].preco = preco;
+                    empresa->edificio->estudios[index].num_precos++;
+                    return;
+            }
+        }
+        printf("Estudio nao encontrado");
+    }
+    else {
+        for (index = 0; index < pcurrent->num_estudios; index++) {
+            if (pcurrent->estudios[index].id == id) {
+                    pcurrent->estudios[index].precos[pcurrent->estudios[index].num_precos].mes = mes ;
+                    pcurrent->estudios[index].precos[pcurrent->estudios[index].num_precos].preco = preco;
+                    pcurrent->estudios[index].num_precos++;
+                    return;
             }
         }
         printf("Estudio nao encontrado");
