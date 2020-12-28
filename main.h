@@ -1,3 +1,9 @@
+typedef struct data {
+	int dia;
+	int mes;
+	int ano;
+}DATA;
+
 typedef struct cliente {
 	int id;
 	char* nome;
@@ -9,26 +15,23 @@ typedef struct agenda {
 	int id;
 	int idUser;
 	char* evento;
-	int data_inicio;
-	int data_fim;
+	struct data data_inicio;
+	struct data data_fim;
+	int preco;
+	int diferenca;
 	struct agenda* next;
 }AGENDA;
-
-typedef struct preco {
-	int mes;
-	int preco;
-}PRECO;
 
 typedef struct estudio {
 	int id;
 	int quartos;
+	int m2;
 	int tamanho_preco;
 	int num_precos;
 	int num_clientes;
 	int num_agendas;
 	CLIENTE* clientes; //ll
 	AGENDA* agenda; //ll
-	PRECO* precos; //arr
 } ESTUDIO;
 
 typedef struct plataforma {
@@ -37,6 +40,8 @@ typedef struct plataforma {
 } PLATAFORMA;
 
 typedef struct edificio {
+	int preco_m2;
+	int id;
 	int tamanho_estudio;
 	ESTUDIO* estudios; //arr
 	int num_estudios;
