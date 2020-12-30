@@ -145,13 +145,17 @@ int Taxa_Ocupacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int d
 		AGENDA* pprevcl = NULL, * pcurrentcl = empresa->edificio->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-				continue;
-			}
-			if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			} else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 				estadiaCount++;
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
 			}
-			pprevcl = pcurrentcl;
-			pcurrentcl = pcurrentcl->next;
+			else {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}
 		}
 		if (strcmp(type, "print") == 0) {
 			printf("Durante %d/%d/%d e %d/%d/%d, houveram %d estadias\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, estadiaCount);
@@ -182,13 +186,17 @@ int Taxa_Ocupacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int d
 	AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 	while (pcurrentcl != NULL) {
 		if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-			continue;
-		}
-		if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+			pprevcl = pcurrentcl;
+			pcurrentcl = pcurrentcl->next;
+		} else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 			estadiaCount++;
+			pprevcl = pcurrentcl;
+			pcurrentcl = pcurrentcl->next;
 		}
-		pprevcl = pcurrentcl;
-		pcurrentcl = pcurrentcl->next;
+		else {
+			pprevcl = pcurrentcl;
+			pcurrentcl = pcurrentcl->next;
+		}
 	}
 	if (strcmp(type, "print") == 0) {
 		printf("Durante %d/%d/%d e %d/%d/%d, houveram %d estadias\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, estadiaCount);
@@ -233,14 +241,17 @@ int Taxa_Ocupacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_dia
 			AGENDA* pprevcl = NULL, * pcurrentcl = empresa->edificio->estudios[index].agenda;
 			while (pcurrentcl != NULL) {
 				if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-					continue;
-				}
-
-				if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 					taxa[estudioCount].estadiaCount++;
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
 				}
-				pprevcl = pcurrentcl;
-				pcurrentcl = pcurrentcl->next;
+				else {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}
 			}
 			estudioCount++;
 		}
@@ -272,14 +283,17 @@ int Taxa_Ocupacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_dia
 		AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-				continue;
-			}
-
-			if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 				taxa[estudioCount].estadiaCount++;
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
 			}
-			pprevcl = pcurrentcl;
-			pcurrentcl = pcurrentcl->next;
+			else {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}
 		}
 		estudioCount++;
 	}
@@ -330,14 +344,17 @@ int Taxa_Ocupacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_me
 			AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 			while (pcurrentcl != NULL) {
 				if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-					continue;
-				}
-
-				if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 					taxa[estudioCount].estadiaCount++;
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
 				}
-				pprevcl = pcurrentcl;
-				pcurrentcl = pcurrentcl->next;
+				else {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}
 			}
 			estudioCount++;
 		}
@@ -398,13 +415,17 @@ int Taxa_Faturacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int 
 		AGENDA* pprevcl = NULL, * pcurrentcl = empresa->edificio->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-				continue;
-			}
-			if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 				moneyAmount += pcurrentcl->preco;
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
 			}
-			pprevcl = pcurrentcl;
-			pcurrentcl = pcurrentcl->next;
+			else {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}
 		}
 		if (strcmp(type, "print") == 0) {
 			printf("Durante %d/%d/%d e %d/%d/%d, foram feitos %d euros\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, moneyAmount);
@@ -432,13 +453,15 @@ int Taxa_Faturacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int 
 		AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-				continue;
-			}
-			if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 				moneyAmount += pcurrentcl->preco;
 			}
-			pprevcl = pcurrentcl;
-			pcurrentcl = pcurrentcl->next;
+			else {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}
 		}
 	}
 	if (strcmp(type, "print") == 0) {
@@ -485,14 +508,17 @@ int Taxa_Faturacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_di
 			AGENDA* pprevcl = NULL, * pcurrentcl = empresa->edificio->estudios[index].agenda;
 			while (pcurrentcl != NULL) {
 				if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-					continue;
-				}
-
-				if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 					taxa[estudioCount].moneyCount+=pcurrentcl->preco;
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
 				}
-				pprevcl = pcurrentcl;
-				pcurrentcl = pcurrentcl->next;
+				else {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}
 			}
 			estudioCount++;
 		}
@@ -532,13 +558,15 @@ int Taxa_Faturacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_di
 		while (pcurrentcl != NULL) {
 			if (strcmp(pcurrentcl->evento, "estadia") != 0) {
 				continue;
-			}
-
-			if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+			}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 				taxa[estudioCount].moneyCount+=pcurrentcl->preco;
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
 			}
-			pprevcl = pcurrentcl;
-			pcurrentcl = pcurrentcl->next;
+			else {
+				pprevcl = pcurrentcl;
+				pcurrentcl = pcurrentcl->next;
+			}
 		}
 		estudioCount++;
 	}
@@ -589,14 +617,17 @@ int Taxa_Faturacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_m
 			AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 			while (pcurrentcl != NULL) {
 				if (strcmp(pcurrentcl->evento, "estadia") != 0) {
-					continue;
-				}
-
-				if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}else if (checkIfDatesCoincide(inicio, pcurrentcl->data_inicio) && checkIfDatesCoincide(pcurrentcl->data_inicio, fim)) {
 					taxa[estudioCount].moneyCount+=pcurrentcl->preco;
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
 				}
-				pprevcl = pcurrentcl;
-				pcurrentcl = pcurrentcl->next;
+				else {
+					pprevcl = pcurrentcl;
+					pcurrentcl = pcurrentcl->next;
+				}
 			}
 			estudioCount++;
 		}
