@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include"ex2_3.h"
 #include"main.h"
-#include <stdbool.h>
 
 int Gestao_Edificios() {
 	int op;
@@ -28,7 +27,7 @@ int Gestao_Edificios() {
 		scanf("%d", &op);
 		switch (op) {
 		case 1:
-			inserir_edificio(&empresa, "Rua s joao 1", 1345, 1,10);
+			inserir_edificio(&empresa, "Rua s joao 1", 1345, 1, 10);
 			break;
 		case 2:
 			inserir_estudio(&empresa, 1, 1, 3, 20);
@@ -37,7 +36,7 @@ int Gestao_Edificios() {
 			inserir_cliente(&empresa, 1, 1, 1, "Joao", 19);
 			break;
 		case 4:
-			inserir_agenda(&empresa, 1, 1,1,1,"estadia",19,10,2020,10,10,2020);
+			inserir_agenda(&empresa, 1, 1, 1, 1, "estadia", 19, 10, 2020, 10, 10, 2020);
 			break;
 		case 5:
 			remover_edificio(&empresa, 1, 1);
@@ -52,7 +51,7 @@ int Gestao_Edificios() {
 			remover_agenda(&empresa, 1, 1, 1);
 			break;
 		case 9:
-			editar_edificio(&empresa, 1, "Rua s joao 2", 4000,10);
+			editar_edificio(&empresa, 1, "Rua s joao 2", 4000, 10);
 			break;
 		case 10:
 			editar_estudio(&empresa, 1, 1, 5);
@@ -61,7 +60,7 @@ int Gestao_Edificios() {
 			editar_cliente(&empresa, 1, 1, 1, "Joaoo crlll", 19);
 			break;
 		case 12:
-			editar_agenda(&empresa, 1, 1, 1, 1, "Tratamento", 11,10,2020, 20,10,2020);
+			editar_agenda(&empresa, 1, 1, 1, 1, "Tratamento", 11, 10, 2020, 20, 10, 2020);
 			break;
 		case 13:
 			print_edificios(&empresa);
@@ -85,10 +84,10 @@ int Gestao_Edificios() {
 
 };
 
-int checkIfDatesCoincide(DATA a, DATA b)
+extern int checkIfDatesCoincide(DATA a, DATA b)
 {
-	if (a.ano < b.ano) return 1; //https://stackoverflow.com/questions/35626133/check-if-date-is-between-two-dates-in-c-arrays
-	if (a.ano == b.ano && a.mes < b.mes) return 1; 
+	if (a.ano < b.ano) return 1;
+	if (a.ano == b.ano && a.mes < b.mes) return 1;
 	if (a.ano == b.ano && a.mes == b.mes && a.dia < b.dia) return 1;
 	if (a.ano == b.ano && a.mes == b.mes && a.dia == b.dia) return 1;
 	return 0;
@@ -165,7 +164,7 @@ void insertionSort(int arr[], int n)
 	}
 }
 
-int inserir_edificio(EMPRESA* empresa, char morada[], int coordenadas, int id,int preco_m2) {
+int inserir_edificio(EMPRESA* empresa, char morada[], int coordenadas, int id, int preco_m2) {
 	EDIFICIO* e = (EDIFICIO*)malloc(sizeof(EDIFICIO));
 	e->morada = (char*)malloc(sizeof(char) * (strlen(morada) + 1));
 	strncpy(e->morada, morada, (sizeof(char) * strlen(morada) + 1));
@@ -183,7 +182,11 @@ int inserir_edificio(EMPRESA* empresa, char morada[], int coordenadas, int id,in
 	}
 	EDIFICIO* pprev = NULL;
 	EDIFICIO* pcurrent = empresa->edificio;
-	while (pcurrent != NULL && pcurrent->id != id) {
+	while (pcurrent != NULL ) {
+		if (pcurrent->id == id) {
+			printf("Ja existe um edificio com este id");
+			return;
+		}
 		pprev = pcurrent;
 		pcurrent = pcurrent->next;
 	}
@@ -258,7 +261,7 @@ int inserir_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos, int m2
 	insertionSort(pcurrent->estudios, pcurrent->num_estudios);
 }
 
-int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char nome[], int idade) { 
+int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char nome[], int idade) {
 	CLIENTE* e = (CLIENTE*)malloc(sizeof(CLIENTE));
 	e->id = idCliente;
 	e->idade = idade;
@@ -292,7 +295,11 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 		}
 		CLIENTE* pprevcl = NULL;
 		CLIENTE* pcurrentcl = empresa->edificio->estudios[index].clientes;
-		while (pcurrentcl != NULL && pcurrentcl->id != idCliente) {
+		while (pcurrentcl != NULL ) {
+			if (pcurrentcl->id == idCliente) {
+				printf("Ja existe um utilizador com este id");
+				return;
+			}
 			pprevcl = pcurrentcl;
 			pcurrentcl = pcurrentcl->next;
 		}
@@ -321,7 +328,11 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 		}
 		CLIENTE* pprevcl = NULL;
 		CLIENTE* pcurrentcl = empresa->edificio->estudios[index].clientes;
-		while (pcurrentcl != NULL && pcurrentcl->id != idCliente) {
+		while (pcurrentcl != NULL) {
+			if (pcurrentcl->id == idCliente) {
+				printf("Ja existe um utilizador com este id");
+				return;
+			}
 			pprevcl = pcurrentcl;
 			pcurrentcl = pcurrentcl->next;
 		}
@@ -378,6 +389,12 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 			if (e->diferenca > 6) {
 				e->preco = e->preco * 0.7;
 			}
+			if (e->data_inicio.dia > 9) {
+				e->preco = e->preco + 20;
+			}
+			else if (e->data_inicio.dia >= 6 && e->data_inicio.dia < 9) {
+				e->preco = e->preco + 40;
+			}
 		}
 		else {
 			e->preco = 0;
@@ -404,7 +421,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 			pprevcl = pcurrentcl;
 			pcurrentcl = pcurrentcl->next;
 		}
-		
+
 		if (pcurrentcl == empresa->edificio->estudios[index].agenda) {
 			e->next = empresa->edificio->estudios[index].agenda;
 			empresa->edificio->estudios[index].agenda = e;
@@ -493,7 +510,6 @@ int remover_edificio(EMPRESA* empresa, int id) {
 
 int remover_estudio(EMPRESA* empresa, int id, int idEstudio) {
 	int index, i;
-	bool isInArray = false;
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
 		return;
@@ -729,7 +745,7 @@ int editar_edificio(EMPRESA* empresa, int id, char morada[], int coordenadas, in
 		pcurrent = pcurrent->next;
 	}
 	if (pcurrent == NULL) {
-		printf("Nao ha edificios com este nome\n");
+		printf("Nao ha edificios com este id\n");
 		return;
 	}
 	if (empresa->edificio == pcurrent) {
@@ -745,7 +761,6 @@ int editar_edificio(EMPRESA* empresa, int id, char morada[], int coordenadas, in
 
 int editar_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos) {
 	int index;
-	bool isInArray = false;
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
 		return;
