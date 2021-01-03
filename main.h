@@ -40,13 +40,15 @@ typedef struct plataforma {
 } PLATAFORMA;
 
 typedef struct edificio {
+	char* nome;
 	int preco_m2;
 	int id;
 	int tamanho_estudio;
 	ESTUDIO* estudios; //arr
 	int num_estudios;
 	char* morada;
-	int coordenadas;
+	double latitude;
+	double longitude;
 	struct edificio * next;
 } EDIFICIO;
 

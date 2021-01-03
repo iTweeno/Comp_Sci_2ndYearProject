@@ -27,7 +27,7 @@ int Gestao_Edificios() {
 		scanf("%d", &op);
 		switch (op) {
 		case 1:
-			inserir_edificio(&empresa, "Rua s joao 1", 1345, 1, 10);
+			inserir_edificio(&empresa, "S joao 1", "D Manuel", 10.2212, -10.4821, 5, 10, 10);
 			break;
 		case 2:
 			inserir_estudio(&empresa, 1, 1, 3, 20);
@@ -51,7 +51,7 @@ int Gestao_Edificios() {
 			remover_agenda(&empresa, 1, 1, 1);
 			break;
 		case 9:
-			editar_edificio(&empresa, 1, "Rua s joao 2", 4000, 10);
+			editar_edificio(&empresa, 1, "Rua s joao 2" "Sao Joao", 4000,2000, 10);
 			break;
 		case 10:
 			editar_estudio(&empresa, 1, 1, 5);
@@ -164,12 +164,15 @@ void insertionSort(int arr[], int n)
 	}
 }
 
-int inserir_edificio(EMPRESA* empresa, char morada[], int coordenadas, int id, int preco_m2) {
+int inserir_edificio(EMPRESA* empresa, char morada[], char nome[], double latitude, double longitude, int id, int preco_m2) {
 	EDIFICIO* e = (EDIFICIO*)malloc(sizeof(EDIFICIO));
 	e->morada = (char*)malloc(sizeof(char) * (strlen(morada) + 1));
 	strncpy(e->morada, morada, (sizeof(char) * strlen(morada) + 1));
-	e->coordenadas = coordenadas;
+	e->nome = (char*)malloc(sizeof(char) * (strlen(nome) + 1));
+	strncpy(e->nome, nome, (sizeof(char) * strlen(nome) + 1));
 	e->id = id;
+	e->latitude = latitude;
+	e->longitude = longitude;
 	e->num_estudios = 0;
 	e->next = NULL;
 	e->preco_m2 = preco_m2;
@@ -734,7 +737,7 @@ int remover_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda) {
 	return;
 }
 
-int editar_edificio(EMPRESA* empresa, int id, char morada[], int coordenadas, int preco_m2) {
+int editar_edificio(EMPRESA* empresa, int id, char morada[],char nome[], int latitude, int longitude, int preco_m2) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
 		return;
@@ -750,12 +753,16 @@ int editar_edificio(EMPRESA* empresa, int id, char morada[], int coordenadas, in
 	}
 	if (empresa->edificio == pcurrent) {
 		strcpy(empresa->edificio->morada, morada, (sizeof(char) * strlen(morada) + 1));
-		empresa->edificio->coordenadas = coordenadas;
+		strcpy(empresa->edificio->nome, nome, (sizeof(char) * strlen(nome) + 1));
+		empresa->edificio->latitude = latitude;
+		empresa->edificio->longitude = longitude;
 		empresa->edificio->preco_m2 = preco_m2;
 		return;
 	}
 	strcpy(pcurrent->morada, morada, (sizeof(char) * strlen(morada) + 1));
-	pcurrent->morada = coordenadas;
+	strcpy(pcurrent->nome, nome, (sizeof(char) * strlen(nome) + 1));
+	pcurrent->latitude = latitude;
+	pcurrent->longitude = longitude;
 	pcurrent->preco_m2 = preco_m2;
 }
 
@@ -1033,7 +1040,7 @@ int print_edificios(EMPRESA* empresa) {
 	}
 	EDIFICIO* pprev = NULL, * pcurrent = empresa->edificio;
 	while (pcurrent != NULL) {
-		printf("Id: %d | Morada: %s | Coordenadas: %d | Preco m2: %d\n", pcurrent->id, pcurrent->morada, pcurrent->coordenadas, pcurrent->preco_m2);
+		printf("Id: %d | Morada: %s | Nome: %s | Coordenadas: %0.4f %0.4f | Preco m2: %d\n", pcurrent->id, pcurrent->morada, pcurrent->nome, pcurrent->latitude, pcurrent->longitude, pcurrent->preco_m2);
 		pprev = pcurrent;
 		pcurrent = pcurrent->next;
 	}
