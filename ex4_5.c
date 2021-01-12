@@ -30,9 +30,11 @@ int Ler_Escrever() {
 			Guardar_Texto_Binary_Agenda(&empresa);
 			break;
 		case 5:
-			
+			Carregar_Ficheiro(&empresa);
+			break;
 		case 6:
-			
+			Carregar_Ficheiro_Agenda(&empresa);
+			break;
 		case 7:
 			Ler_Binary(&empresa);
 			break;
@@ -66,7 +68,7 @@ int Guardar_Texto_Ficheiro(EMPRESA* empresa) {
 			fprintf(pfile, "Estudio: %d | Quartos: %d | Area: %d | Num_Clientes: %d | Num_Agendas: %d\n", pcurrent->estudios[i].id, pcurrent->estudios[i].quartos, pcurrent->estudios[i].m2, pcurrent->estudios[i].num_clientes, pcurrent->estudios[i].num_agendas);
 			CLIENTE* pcurrentcl = pcurrent->estudios[i].clientes;
 			while (pcurrentcl != NULL) {
-				fprintf(pfile, "Cliente: Id: %d | Nome: %s | Idade: %d\n", pcurrentcl->id, pcurrentcl->nome, pcurrentcl->idade);
+				fprintf(pfile, "Cliente: %d | Nome: %s | Idade: %d\n", pcurrentcl->id, pcurrentcl->nome, pcurrentcl->idade);
 				pcurrentcl = pcurrentcl->next;
 			}
 		}
@@ -84,10 +86,10 @@ int Guardar_Texto_Agenda(EMPRESA* empresa) {
 	EDIFICIO* pcurrent = empresa->edificio;
 	while (pcurrent != NULL) {
 		for (int i = 0; i < pcurrent->num_estudios; i++) {
-			fprintf(pfile, "Num_Agendas: %d", pcurrent->estudios[i].num_agendas);
+			fprintf(pfile, "Num_Agendas: %d\n", pcurrent->estudios[i].num_agendas);
 			AGENDA* pcurrentag = pcurrent->estudios[i].agenda;
 			while (pcurrentag != NULL) {
-				fprintf(pfile, "Edificio: %d | Estudio: %d | Cliente: Id: %d | Id_User: %d | Evento: %s | Data_Inicio: %d/%d/%d | Data_Fim: %d/%d/%d | Preco: %d | Diferenca_dias: %d | Plataforma: %s\n", pcurrent->id, pcurrent->estudios[i].id, pcurrentag->id, pcurrentag->idUser, pcurrentag->evento, pcurrentag->data_inicio.dia, pcurrentag->data_inicio.mes, pcurrentag->data_inicio.ano, pcurrentag->data_fim.dia, pcurrentag->data_fim.mes, pcurrentag->data_fim.ano, pcurrentag->preco, pcurrentag->diferenca, pcurrentag->plataforma);
+				fprintf(pfile, "Edificio: %d | Estudio: %d | Agenda: %d | Id_User: %d | Evento: %s | Data_Inicio: %d / %d / %d | Data_Fim: %d / %d / %d | Preco: %d | Diferenca_dias: %d | Plataforma: %s\n", pcurrent->id, pcurrent->estudios[i].id, pcurrentag->id, pcurrentag->idUser, pcurrentag->evento, pcurrentag->data_inicio.dia, pcurrentag->data_inicio.mes, pcurrentag->data_inicio.ano, pcurrentag->data_fim.dia, pcurrentag->data_fim.mes, pcurrentag->data_fim.ano, pcurrentag->preco, pcurrentag->diferenca, pcurrentag->plataforma);
 				pcurrentag = pcurrentag->next;
 			}
 		}
@@ -102,7 +104,7 @@ int Guardar_Texto_Binary(EMPRESA* empresa) {
 		printf("Erro a aceder ao ficheiro");
 		return;
 	}
-	fwrite(&(empresa->num_edificios),sizeof(int),1, pfile);
+	fwrite(&(empresa->num_edificios), sizeof(int), 1, pfile);
 	EDIFICIO* pcurrent = empresa->edificio;
 	while (pcurrent != NULL) {
 		fwrite(&(pcurrent->id), sizeof(int), 1, pfile);
@@ -110,8 +112,8 @@ int Guardar_Texto_Binary(EMPRESA* empresa) {
 		fwrite(pcurrent->nome, sizeof(char), 50, pfile);
 		fwrite(&(pcurrent->num_estudios), sizeof(int), 1, pfile);
 		fwrite(pcurrent->morada, sizeof(char), 50, pfile);
-		fwrite(&(pcurrent->latitude), sizeof(float), 1, pfile);
-		fwrite(&(pcurrent->longitude), sizeof(float), 1, pfile);
+		fwrite(&(pcurrent->latitude), sizeof(double), 1, pfile);
+		fwrite(&(pcurrent->longitude), sizeof(double), 1, pfile);
 		fwrite(&(pcurrent->tamanho_estudio), sizeof(int), 1, pfile);
 		for (int i = 0; i < pcurrent->num_estudios; i++) {
 			fwrite(&(pcurrent->estudios[i].id), sizeof(int), 1, pfile);
@@ -167,13 +169,58 @@ int Guardar_Texto_Binary_Agenda(EMPRESA* empresa) {
 	fclose(pfile);
 }
 
+int Carregar_Ficheiro(EMPRESA* empresa) {
+	FILE* pfile = fopen("Info.txt", "r");
+	if (pfile == NULL) {
+		printf("Erro a aceder ao ficheiro");
+		return;
+	}
+	int num_edificios, idEdificio, precom2, num_estudios, tamanho_estudio, idEstudio, quartos, area, num_clientes, num_agendas, idCliente, Idade;
+	double latitude, longitude;
+	char nomeEdificio[50], morada[50], nomeCliente[50];
+	fscanf(pfile, "%*s %*s %d", &num_edificios);
+	//test
+	for (int i = 0; i < num_edificios; i++) {
+		fscanf(pfile, "%*s %d %*s %*s %d  %*s %*s %s %*s %*s %d %*s %*s %s %*s %*s %lf %*s %*s %lf %*s %*s %d", &idEdificio, &precom2, nomeEdificio, &num_estudios, morada, &latitude, &longitude, &tamanho_estudio); //fix 
+		printf("Edifico: %d | Preco_m2: %d | Nome: %s | Num_Estudios: %d | Morada: %s | Latitude: %0.4f | Longitude: %0.4f | Tamanho_Estudio: %d\n", idEdificio, precom2, nomeEdificio, num_estudios, morada, latitude, longitude, tamanho_estudio);
+		//inserir_edificio(&empresa, morada, nomeEdificio, latitude, longitude, idEdificio, precom2);
+		for (int j = 0; j < num_estudios; j++) {
+			fscanf(pfile, "%*s %d %*s %*s %d  %*s %*s %d  %*s %*s %d  %*s %*s %d", &idEstudio, &quartos, &area, &num_clientes, &num_agendas);
+			//inserir_estudio(&empresa, idEdificio, idEstudio, quartos, area);
+			for (int k = 0; k < num_clientes; k++) {
+				fscanf(pfile, "%*s %d %*s %*s %s %*s %*s %d", &idCliente, nomeCliente, &Idade);
+				//inserir_cliente(&empresa, idEdificio, idEstudio, idCliente, nomeCliente, Idade);
+			}
+		}
+	}
+
+}
+
+int Carregar_Ficheiro_Agenda(EMPRESA* empresa) {
+	FILE* pfile = fopen("Agenda.txt", "r");
+	if (pfile == NULL) {
+		printf("Erro a aceder ao ficheiro");
+		return;
+	}
+	int num_agendas, idEdificio, idEstudio, idAgenda, idUser, data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, diferenca,preco;
+	char evento[50], plataforma[50];
+	fscanf(pfile, "%*s %d", &num_agendas);
+	for (int i = 0; i < num_agendas; i++) {
+		fscanf(pfile,"%*s %d %*s %*s %d %*s %*s %d %*s %*s %d %*s %*s %s %*s %*s %d %*s %d %*s %d %*s %*s %d %*s %d %*s %d %*s %*s %d %*s %*s %d %*s %*s %s", &idEdificio, &idEstudio, &idAgenda, &idUser, evento, &data_inicio_dia, &data_inicio_mes, &data_inicio_ano, &data_fim_dia, &data_fim_mes, &data_fim_ano, &preco, &diferenca,plataforma);
+		printf("%d %d %d %d %s %d %d %d %d %d %d %d %d %s\n", idEdificio, idEstudio, idAgenda, idUser, evento, data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, diferenca, preco,plataforma);
+		inserir_agenda(&empresa, idEdificio, idEstudio, idAgenda, idUser, evento, data_fim_dia, data_fim_mes, data_fim_ano, data_inicio_dia, data_fim_mes, data_inicio_ano, plataforma);
+	}
+
+}
+
 int Ler_Binary(EMPRESA* empresa) {
 	FILE* pfile = fopen("InfoB.bin", "rb");
 	if (pfile == NULL) {
 		printf("Erro a aceder ao ficheiro");
 		return;
 	}
-	int numEd,idEs, precom2, num_estudios, latitude, longitude, tam_estudio, idEst, quartos, m2, num_clientes, num_agendas, idcl, idade;
+	int numEd, idEs, precom2, num_estudios, tam_estudio, idEst, quartos, m2, num_clientes, num_agendas, idcl, idade;
+	double latitude, longitude;
 	char nomeEd[50], morada[50], nomeCl[50];
 	fread(&numEd, sizeof(int), 1, pfile);
 	printf("Num edificios: %d\n", numEd);
@@ -183,30 +230,26 @@ int Ler_Binary(EMPRESA* empresa) {
 		fread(nomeEd, sizeof(char), 50, pfile);
 		fread(&num_estudios, sizeof(int), 1, pfile);
 		fread(morada, sizeof(char), 50, pfile);
-		fread(&latitude, sizeof(float), 1, pfile);
-		fread(&longitude, sizeof(float), 1, pfile); //floats nor working
+		fread(&latitude, sizeof(double), 1, pfile);
+		fread(&longitude, sizeof(double), 1, pfile); //floats nor working
 		fread(&tam_estudio, sizeof(int), 1, pfile);
-		printf("Edifico: %d | Preco_m2: %d | Nome: %s | Num_Estudios: %d | Morada: %s | Latitude: %0.4f | Longitude: %0.4f | Tamanho_Estudio: %d\n", idEs, precom2,nomeEd, num_estudios, morada, latitude,longitude, tam_estudio);
+		printf("Edifico: %d | Preco_m2: %d | Nome: %s | Num_Estudios: %d | Morada: %s | Latitude: %lf | Longitude: %lf | Tamanho_Estudio: %d\n", idEs, precom2, nomeEd, num_estudios, morada, latitude, longitude, tam_estudio);
 		for (int j = 0; j < num_estudios; j++) {
 			fread(&idEst, sizeof(int), 1, pfile);
 			fread(&quartos, sizeof(int), 1, pfile);
 			fread(&m2, sizeof(int), 1, pfile);
 			fread(&num_clientes, sizeof(int), 1, pfile);
 			fread(&num_agendas, sizeof(int), 1, pfile);
-			printf("Estudio: %d | Quartos: %d | Area: %d | Num_Clientes: %d | Num_Agendas: %d\n", idEst, quartos,m2, num_clientes, num_agendas);
+			printf("Estudio: %d | Quartos: %d | Area: %d | Num_Clientes: %d | Num_Agendas: %d\n", idEst, quartos, m2, num_clientes, num_agendas);
 		}
 		for (int k = 0; k < num_clientes; k++) {
 			fread(&idcl, sizeof(int), 1, pfile);
-			fread(nomeCl , sizeof(char), 50, pfile);
+			fread(nomeCl, sizeof(char), 50, pfile);
 			fread(&idade, sizeof(int), 1, pfile);
 			printf("Cliente: Id: %d | Nome: %s | Idade: %d\n", idcl, nomeCl, idade);
 		}
 	}
 	fclose(pfile);
-}
-
-int carregar_ficheiro(EMPRESA* empresa) {
-
 }
 
 int Ler_Binary_Agenda(EMPRESA* empresa) {
@@ -234,7 +277,7 @@ int Ler_Binary_Agenda(EMPRESA* empresa) {
 		fread(&data_fim_dia, sizeof(int), 1, pfile);
 		fread(&data_fim_mes, sizeof(int), 1, pfile);
 		fread(&data_fim_ano, sizeof(int), 1, pfile);
-		printf("Edifico: %d | Estudio: %d | Id: %d | idUser: %d | Evento: %s | Plataforma: %s | Preco: %d | Diferenca: %d | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d\n", idEs, idEst, idAg, idUser, evento, plataforma, preco,diferenca,data_inicio_dia,data_inicio_mes,data_inicio_ano,data_fim_dia,data_fim_mes, data_fim_ano);
+		printf("Edifico: %d | Estudio: %d | Id: %d | idUser: %d | Evento: %s | Plataforma: %s | Preco: %d | Diferenca: %d | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d\n", idEs, idEst, idAg, idUser, evento, plataforma, preco, diferenca, data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano);
 	}
 	fclose(pfile);
 }
