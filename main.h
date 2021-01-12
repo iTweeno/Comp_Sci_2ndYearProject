@@ -17,6 +17,7 @@ typedef struct agenda {
 	char* evento;
 	struct data data_inicio;
 	struct data data_fim;
+	char* plataforma;
 	int preco;
 	int diferenca;
 	struct agenda* next;
@@ -26,8 +27,6 @@ typedef struct estudio {
 	int id;
 	int quartos;
 	int m2;
-	int tamanho_preco;
-	int num_precos;
 	int num_clientes;
 	int num_agendas;
 	CLIENTE* clientes; //ll

@@ -27,7 +27,7 @@ int Gestao_Edificios() {
 		scanf("%d", &op);
 		switch (op) {
 		case 1:
-			inserir_edificio(&empresa, "S joao 1", "D Manuel", 10.2212, -10.4821, 5, 10, 10);
+			inserir_edificio(&empresa, "S joao 1", "D Manuel", 10.2212, -10.4821, 1, 10, 10);
 			break;
 		case 2:
 			inserir_estudio(&empresa, 1, 1, 3, 20);
@@ -36,7 +36,7 @@ int Gestao_Edificios() {
 			inserir_cliente(&empresa, 1, 1, 1, "Joao", 19);
 			break;
 		case 4:
-			inserir_agenda(&empresa, 1, 1, 1, 1, "estadia", 19, 10, 2020, 10, 10, 2020);
+			inserir_agenda(&empresa, 1, 1, 1, 1, "estadia", 19, 10, 2020, 10, 10, 2020, "AirBNB");
 			break;
 		case 5:
 			remover_edificio(&empresa, 1, 1);
@@ -51,7 +51,7 @@ int Gestao_Edificios() {
 			remover_agenda(&empresa, 1, 1, 1);
 			break;
 		case 9:
-			editar_edificio(&empresa, 1, "Rua s joao 2" "Sao Joao", 4000,2000, 10);
+			editar_edificio(&empresa, 1, "Joao d1", "Rei Duarte", 10.2455, 12.3333, 10);
 			break;
 		case 10:
 			editar_estudio(&empresa, 1, 1, 5);
@@ -60,7 +60,7 @@ int Gestao_Edificios() {
 			editar_cliente(&empresa, 1, 1, 1, "Joaoo crlll", 19);
 			break;
 		case 12:
-			editar_agenda(&empresa, 1, 1, 1, 1, "Tratamento", 11, 10, 2020, 20, 10, 2020);
+			editar_agenda(&empresa, 1, 1, 1, 1, "Tratamento", 11, 10, 2020, 20, 10, 2020, "booking");
 			break;
 		case 13:
 			print_edificios(&empresa);
@@ -353,12 +353,14 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 	}
 }
 
-int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano) {
+int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, char plataforma[]) {
 	AGENDA* e = (AGENDA*)malloc(sizeof(AGENDA));
 	e->id = idAgenda;
 	e->idUser = idCliente;
 	e->evento = (char*)malloc(sizeof(char) * (strlen(evento) + 1));
 	strncpy(e->evento, evento, (sizeof(char) * strlen(evento) + 1));
+	e->plataforma = (char*)malloc(sizeof(char) * (strlen(plataforma) + 1));
+	strncpy(e->plataforma, plataforma, (sizeof(char) * strlen(plataforma) + 1));
 	e->data_fim.dia = data_fim_dia;
 	e->data_fim.mes = data_fim_mes;
 	e->data_fim.ano = data_fim_ano;
@@ -737,7 +739,7 @@ int remover_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda) {
 	return;
 }
 
-int editar_edificio(EMPRESA* empresa, int id, char morada[],char nome[], int latitude, int longitude, int preco_m2) {
+int editar_edificio(EMPRESA* empresa, int id, char morada[],char nome[], double latitude, double longitude, int preco_m2) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
 		return;
@@ -874,7 +876,7 @@ int editar_cliente(EMPRESA* empresa, int id, int IdEstudio, int idCliente, char 
 
 }
 
-int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano) {
+int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, char plataforma[]) {
 	int index;
 	DATA dataInicio = { data_inicio_dia,data_inicio_mes,data_inicio_ano };
 	DATA dataFim = { data_fim_dia,data_fim_mes,data_fim_ano };
@@ -922,6 +924,7 @@ int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idC
 		}
 		if (empresa->edificio->estudios[index].agenda == pcurrentcl) {
 			strcpy(empresa->edificio->estudios[index].agenda->evento, evento, (sizeof(char) * strlen(evento) + 1));
+			strcpy(empresa->edificio->estudios[index].agenda->plataforma, plataforma, (sizeof(char) * strlen(plataforma) + 1));
 			empresa->edificio->estudios[index].agenda->idUser = idCliente;
 			empresa->edificio->estudios[index].agenda->data_inicio.dia = data_inicio_dia;
 			empresa->edificio->estudios[index].agenda->data_inicio.mes = data_inicio_mes;
@@ -942,6 +945,7 @@ int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idC
 			return;
 		}
 		strcpy(pcurrentcl->evento, evento, (sizeof(char) * strlen(evento) + 1));
+		strcpy(pcurrentcl->plataforma, plataforma, (sizeof(char) * strlen(plataforma) + 1));
 		pcurrentcl->idUser = idCliente;
 		pcurrentcl->data_inicio.dia = data_inicio_dia;
 		pcurrentcl->data_inicio.mes = data_inicio_mes;
@@ -993,6 +997,7 @@ int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idC
 	}
 	if (pcurrent->estudios[index].agenda == pcurrentcl) {
 		strcpy(pcurrent->estudios[index].agenda->evento, evento, (sizeof(char) * strlen(evento) + 1));
+		strcpy(pcurrent->estudios[index].agenda->plataforma, plataforma, (sizeof(char)* strlen(plataforma) + 1));
 		pcurrent->estudios[index].agenda->idUser = idCliente;
 		pcurrent->estudios[index].agenda->idUser = idCliente;
 		pcurrent->estudios[index].agenda->data_inicio.dia = data_inicio_dia;
@@ -1014,6 +1019,7 @@ int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idC
 		return;
 	}
 	strcpy(pcurrentcl->evento, evento, (sizeof(char) * strlen(evento) + 1));
+	strcpy(pcurrentcl->plataforma, plataforma, (sizeof(char)* strlen(plataforma) + 1));
 	pcurrentcl->idUser = idCliente;
 	pcurrentcl->data_inicio.dia = data_inicio_dia;
 	pcurrentcl->data_inicio.mes = data_inicio_mes;
@@ -1170,7 +1176,7 @@ int print_agenda(EMPRESA* empresa, int id, int IdEstudio) {
 		}
 		AGENDA* pprevcl = NULL, * pcurrentcl = empresa->edificio->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
-			printf("Id: %d | Id do User: %d | Descriçao do Evento: %s | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d | Preco: %d\n", pcurrentcl->id, pcurrentcl->idUser, pcurrentcl->evento, pcurrentcl->data_inicio.dia, pcurrentcl->data_inicio.mes, pcurrentcl->data_inicio.ano, pcurrentcl->data_fim.dia, pcurrentcl->data_fim.mes, pcurrentcl->data_fim.ano, pcurrentcl->preco);
+			printf("Id: %d | Id do User: %d | Descriçao do Evento: %s | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d | Preco: %d | Plataforma: %s\n", pcurrentcl->id, pcurrentcl->idUser, pcurrentcl->evento, pcurrentcl->data_inicio.dia, pcurrentcl->data_inicio.mes, pcurrentcl->data_inicio.ano, pcurrentcl->data_fim.dia, pcurrentcl->data_fim.mes, pcurrentcl->data_fim.ano, pcurrentcl->preco, pcurrentcl->plataforma);
 			pprevcl = pcurrentcl;
 			pcurrentcl = pcurrentcl->next;
 		}
@@ -1188,7 +1194,7 @@ int print_agenda(EMPRESA* empresa, int id, int IdEstudio) {
 			}
 			AGENDA* pprevcl = NULL, * pcurrentcl = pcurrent->estudios[index].agenda;
 			while (pcurrentcl != NULL) {
-				printf("Id: %d | Id do User: %d | Descriçao do Evento: %s | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d | Preco: %d\n", pcurrentcl->id, pcurrentcl->idUser, pcurrentcl->evento, pcurrentcl->data_inicio.dia, pcurrentcl->data_inicio.mes, pcurrentcl->data_inicio.ano, pcurrentcl->data_fim.dia, pcurrentcl->data_fim.mes, pcurrentcl->data_fim.ano, pcurrentcl->preco);
+				printf("Id: %d | Id do User: %d | Descriçao do Evento: %s | Data Inicio: %d/%d/%d | Data Fim: %d/%d/%d | Preco: %d | Plataforma: %s\n", pcurrentcl->id, pcurrentcl->idUser, pcurrentcl->evento, pcurrentcl->data_inicio.dia, pcurrentcl->data_inicio.mes, pcurrentcl->data_inicio.ano, pcurrentcl->data_fim.dia, pcurrentcl->data_fim.mes, pcurrentcl->data_fim.ano, pcurrentcl->preco, pcurrentcl->plataforma);
 				pprevcl = pcurrentcl;
 				pcurrentcl = pcurrentcl->next;
 			}

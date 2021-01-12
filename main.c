@@ -2,6 +2,7 @@
 #include"main.h"
 #include"ex2_3.h"
 #include"ex6_7.h"
+#include"ex4_5.h"
 
 
 EMPRESA empresa = { 0,NULL,NULL };
@@ -13,7 +14,7 @@ int main() {
 		printf("Escolha a opcao:\n");
 		printf("\t1-Gestao Edificios\n");
 		printf("\t2-Relatorios\n");
-		printf("\t3\n");
+		printf("\t3-Print e Leitura\n");
 		printf("\t4\n");
 		printf("\t0-Sair\n");
 		scanf("%d", &op);
@@ -25,7 +26,7 @@ int main() {
 			Relatorios();
 			break;
 		case 3:
-
+			Ler_Escrever();
 			break;
 		case 4:
 

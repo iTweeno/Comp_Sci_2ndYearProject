@@ -369,14 +369,14 @@ int Taxa_Ocupacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_me
 	}
 	for (int i = 0; i < estudioCount; i++) {
 		if (strcmp(type, "print") == 0) {
-			printf("Durante %d/%d/%d e %d/%d/%d, houveram %d estadias no estudio %d\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, taxa[i].estadiaCount, taxa[i].estudio);
+			printf("Durante %d/%d/%d e %d/%d/%d, houveram %d estadias no estudio %d no edificio %d\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, taxa[i].estadiaCount, taxa[i].estudio, taxa[i].edificio);
 		}
 		else if (strcmp(type, "file") == 0) {
 			FILE* fp = fopen("taxa_ocupacao.txt", "w");
 			if (fp == NULL) {
 				printf("Erro ao abrir ficheiro");
 			}
-			fprintf(fp, "Durante %d/%d/%d e %d/%d/%d, houveram %d estadias no estudio %d\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, taxa[i].estadiaCount, taxa[i].estudio);
+			fprintf(fp, "Durante %d/%d/%d e %d/%d/%d, houveram %d estadias no estudio %d no edificio %d\n", data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, taxa[i].estadiaCount, taxa[i].estudio, taxa[i].edificio);
 			fclose(fp);
 		}
 		else {
