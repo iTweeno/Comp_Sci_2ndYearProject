@@ -1,14 +1,6 @@
 #include<stdio.h>
-#include"ex2_3.h"
 #include"main.h"
-//sort missing
 
-typedef struct Taxa {
-	int moneyCount;
-	int edificio;
-	int estudio;
-	int estadiaCount;
-} TAXA;
 int Relatorios() {
 	int op;
 	do {
@@ -635,10 +627,10 @@ int Taxa_Faturacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_m
 		pcurrent = pcurrent->next;
 	} 
 	if (strcmp("decrescente", order) == 0) {
-		selectionSortDecrescente(taxa, estudioCount,"money");
+		selectionSortDecrescente(taxa, estudioCount,"");
 	}
 	else {
-		selectionSortCrescente(taxa, estudioCount, "money");
+		selectionSortCrescente(taxa, estudioCount, "");
 	}
 	for (int i = 0; i < estudioCount; i++) {
 		if (strcmp(type, "print") == 0) {

@@ -1,5 +1,4 @@
 #include<stdio.h>
-#include"ex2_3.h"
 #include"main.h"
 
 int Gestao_Edificios() {
@@ -27,7 +26,7 @@ int Gestao_Edificios() {
 		scanf("%d", &op);
 		switch (op) {
 		case 1:
-			inserir_edificio(&empresa, "S joao 1", "D Manuel", 10.2212, -10.4821, 1, 10, 10);
+			inserir_edificio(&empresa, "Sjoao1", "DManuel", 10.2212, -10.4821, 1, 10, 10);
 			break;
 		case 2:
 			inserir_estudio(&empresa, 1, 1, 3, 20);
@@ -51,7 +50,7 @@ int Gestao_Edificios() {
 			remover_agenda(&empresa, 1, 1, 1);
 			break;
 		case 9:
-			editar_edificio(&empresa, 1, "Joao d1", "Rei Duarte", 10.2455, 12.3333, 10);
+			editar_edificio(&empresa,1,"Joao d1","Rei Duarte",10.2455,12.3333,10);
 			break;
 		case 10:
 			editar_estudio(&empresa, 1, 1, 5);
@@ -115,7 +114,6 @@ int getDifference(DATA dt1, DATA dt2)
 
 	long int n1 = dt1.ano * 365 + dt1.dia;
 
-	// Add days for months in given date
 	for (int i = 0; i < dt1.mes - 1; i++)
 		n1 += monthDays[i];
 
@@ -187,7 +185,7 @@ int inserir_edificio(EMPRESA* empresa, char morada[], char nome[], double latitu
 	EDIFICIO* pcurrent = empresa->edificio;
 	while (pcurrent != NULL ) {
 		if (pcurrent->id == id) {
-			printf("Ja existe um edificio com este id");
+			printf("Ja existe um edificio com este id\n");
 			return;
 		}
 		pprev = pcurrent;
@@ -228,7 +226,7 @@ int inserir_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos, int m2
 		}
 		int index = binarySearch(empresa->edificio->estudios, 0, empresa->edificio->num_estudios - 1, idEstudio);
 		if (index != -1) {
-			printf("estudio ja existe");
+			printf("estudio ja existe\n");
 			return;
 		}
 		empresa->edificio->estudios[empresa->edificio->num_estudios].id = idEstudio;
@@ -250,10 +248,10 @@ int inserir_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos, int m2
 	}
 	int index = binarySearch(pcurrent->estudios, 0, pcurrent->num_estudios - 1, idEstudio);
 	if (index != -1) {
-		printf("estudio ja existe");
+		printf("estudio ja existe\n");
 		return;
 	}
-	pcurrent->estudios[pcurrent->num_estudios].id = id;
+	pcurrent->estudios[pcurrent->num_estudios].id = idEstudio;
 	pcurrent->estudios[pcurrent->num_estudios].quartos = quartos;
 	pcurrent->estudios[pcurrent->num_estudios].m2 = m2;
 	pcurrent->estudios[pcurrent->num_estudios].agenda = NULL;
@@ -300,7 +298,7 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 		CLIENTE* pcurrentcl = empresa->edificio->estudios[index].clientes;
 		while (pcurrentcl != NULL ) {
 			if (pcurrentcl->id == idCliente) {
-				printf("Ja existe um utilizador com este id");
+				printf("Ja existe um utilizador com este id\n");
 				return;
 			}
 			pprevcl = pcurrentcl;
@@ -321,7 +319,7 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 	else {
 		int index = binarySearch(pcurrent->estudios, 0, pcurrent->num_estudios - 1, idEstudio);
 		if (index == -1) {
-			printf("estudio nao encontrado");
+			printf("estudio nao encontrado\n");
 			return;
 		}
 		if (pcurrent->estudios[index].num_clientes == 0) {
@@ -386,7 +384,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 	if (empresa->edificio == pcurrent) {
 		int index = binarySearch(empresa->edificio->estudios, 0, empresa->edificio->num_estudios - 1, IdEstudio);
 		if (index == -1) {
-			printf("estudio nao encontrado");
+			printf("estudio nao encontrado\n");
 			return;
 		}
 		if (strcmp(evento, "estadia") == 0) {
@@ -414,7 +412,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 		AGENDA* pcurrentcl = empresa->edificio->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (checkIfDatesCoincide(pcurrentcl->data_inicio, e->data_inicio) && checkIfDatesCoincide(e->data_inicio, pcurrentcl->data_fim)) {
-				printf("Ja existe um evento nesta data");
+				printf("Ja existe um evento nesta data\n");
 				return;
 			}
 			pprevcl = pcurrentcl;
@@ -441,7 +439,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 	else {
 		int index = binarySearch(pcurrent->estudios, 0, pcurrent->num_estudios - 1, IdEstudio);
 		if (index == -1) {
-			printf("estudio nao encontrado");
+			printf("estudio nao encontrado\n");
 			return;
 		}
 		if (strcmp(evento, "estadia") == 0) {
@@ -462,7 +460,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 		AGENDA* pcurrentcl = pcurrent->estudios[index].agenda;
 		while (pcurrentcl != NULL) {
 			if (checkIfDatesCoincide(pcurrentcl->data_inicio, e->data_inicio) && checkIfDatesCoincide(e->data_inicio, pcurrentcl->data_fim)) {
-				printf("Ja existe um evento nesta data");
+				printf("Ja existe um evento nesta data\n");
 				return;
 			}
 			pprevcl = pcurrentcl;

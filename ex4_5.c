@@ -181,15 +181,14 @@ int Carregar_Ficheiro(EMPRESA* empresa) {
 	fscanf(pfile, "%*s %*s %d", &num_edificios);
 	//test
 	for (int i = 0; i < num_edificios; i++) {
-		fscanf(pfile, "%*s %d %*s %*s %d  %*s %*s %s %*s %*s %d %*s %*s %s %*s %*s %lf %*s %*s %lf %*s %*s %d", &idEdificio, &precom2, nomeEdificio, &num_estudios, morada, &latitude, &longitude, &tamanho_estudio); //fix 
-		printf("Edifico: %d | Preco_m2: %d | Nome: %s | Num_Estudios: %d | Morada: %s | Latitude: %0.4f | Longitude: %0.4f | Tamanho_Estudio: %d\n", idEdificio, precom2, nomeEdificio, num_estudios, morada, latitude, longitude, tamanho_estudio);
-		//inserir_edificio(&empresa, morada, nomeEdificio, latitude, longitude, idEdificio, precom2);
+		fscanf(pfile, "%*s %d %*s %*s %d  %*s %*s %s %*s %*s %d %*s %*s %s %*s %*s %lf %*s %*s %lf %*s %*s %d", &idEdificio, &precom2, nomeEdificio, &num_estudios, morada, &latitude, &longitude, &tamanho_estudio); 
+		inserir_edificio(empresa, morada, nomeEdificio, latitude, longitude, idEdificio, precom2);
 		for (int j = 0; j < num_estudios; j++) {
 			fscanf(pfile, "%*s %d %*s %*s %d  %*s %*s %d  %*s %*s %d  %*s %*s %d", &idEstudio, &quartos, &area, &num_clientes, &num_agendas);
-			//inserir_estudio(&empresa, idEdificio, idEstudio, quartos, area);
+			inserir_estudio(empresa, idEdificio, idEstudio, quartos, area);
 			for (int k = 0; k < num_clientes; k++) {
 				fscanf(pfile, "%*s %d %*s %*s %s %*s %*s %d", &idCliente, nomeCliente, &Idade);
-				//inserir_cliente(&empresa, idEdificio, idEstudio, idCliente, nomeCliente, Idade);
+				inserir_cliente(empresa, idEdificio, idEstudio, idCliente, nomeCliente, Idade);
 			}
 		}
 	}
@@ -207,10 +206,8 @@ int Carregar_Ficheiro_Agenda(EMPRESA* empresa) {
 	fscanf(pfile, "%*s %d", &num_agendas);
 	for (int i = 0; i < num_agendas; i++) {
 		fscanf(pfile,"%*s %d %*s %*s %d %*s %*s %d %*s %*s %d %*s %*s %s %*s %*s %d %*s %d %*s %d %*s %*s %d %*s %d %*s %d %*s %*s %d %*s %*s %d %*s %*s %s", &idEdificio, &idEstudio, &idAgenda, &idUser, evento, &data_inicio_dia, &data_inicio_mes, &data_inicio_ano, &data_fim_dia, &data_fim_mes, &data_fim_ano, &preco, &diferenca,plataforma);
-		printf("%d %d %d %d %s %d %d %d %d %d %d %d %d %s\n", idEdificio, idEstudio, idAgenda, idUser, evento, data_inicio_dia, data_inicio_mes, data_inicio_ano, data_fim_dia, data_fim_mes, data_fim_ano, diferenca, preco,plataforma);
-		inserir_agenda(&empresa, idEdificio, idEstudio, idAgenda, idUser, evento, data_fim_dia, data_fim_mes, data_fim_ano, data_inicio_dia, data_fim_mes, data_inicio_ano, plataforma);
+		inserir_agenda(empresa, idEdificio, idEstudio, idAgenda, idUser, evento, data_fim_dia, data_fim_mes, data_fim_ano, data_inicio_dia, data_fim_mes, data_inicio_ano, plataforma);
 	}
-
 }
 
 int Ler_Binary(EMPRESA* empresa) {
@@ -231,7 +228,7 @@ int Ler_Binary(EMPRESA* empresa) {
 		fread(&num_estudios, sizeof(int), 1, pfile);
 		fread(morada, sizeof(char), 50, pfile);
 		fread(&latitude, sizeof(double), 1, pfile);
-		fread(&longitude, sizeof(double), 1, pfile); //floats nor working
+		fread(&longitude, sizeof(double), 1, pfile);
 		fread(&tam_estudio, sizeof(int), 1, pfile);
 		printf("Edifico: %d | Preco_m2: %d | Nome: %s | Num_Estudios: %d | Morada: %s | Latitude: %lf | Longitude: %lf | Tamanho_Estudio: %d\n", idEs, precom2, nomeEd, num_estudios, morada, latitude, longitude, tam_estudio);
 		for (int j = 0; j < num_estudios; j++) {

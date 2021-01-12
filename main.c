@@ -1,8 +1,5 @@
 #include<stdio.h>
 #include"main.h"
-#include"ex2_3.h"
-#include"ex6_7.h"
-#include"ex4_5.h"
 
 
 EMPRESA empresa = { 0,NULL,NULL };
