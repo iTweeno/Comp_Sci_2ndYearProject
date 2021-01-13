@@ -82,7 +82,7 @@ int Gestao_Edificios() {
 	} while (op != 0);
 
 };
-
+///calcula se as datas coincidem, util para colocar eventos dentro da agenda
 extern int checkIfDatesCoincide(DATA a, DATA b)
 {
 	if (a.ano < b.ano) return 1;
@@ -95,7 +95,7 @@ extern int checkIfDatesCoincide(DATA a, DATA b)
 const int monthDays[12]
 = { 31, 28, 31, 30, 31, 30,
    31, 31, 30, 31, 30, 31 };
-
+///conta os anos que tem 365 dias
 int countLeapYears(DATA d)
 {
 	int years = d.ano;
@@ -108,7 +108,7 @@ int countLeapYears(DATA d)
 		+ years / 400;
 }
 
-
+///calcula a diferenca entre duas datas
 int getDifference(DATA dt1, DATA dt2)
 {
 
@@ -127,24 +127,24 @@ int getDifference(DATA dt1, DATA dt2)
 
 	return (n2 - n1);
 }
-
-int binarySearch(int arr[], int l, int r, int x)
+///procura binaria em array
+int binarySearch(ESTUDIO arr[], int l, int r, int x)
 {
 	if (r >= l) {
 		int mid = l + (r - l) / 2;
 
 
-		if (arr[mid] == x)
+		if (arr[mid].id == x)
 			return mid;
 
-		if (arr[mid] > x)
+		if (arr[mid].id > x)
 			return binarySearch(arr, l, mid - 1, x);
 
 		return binarySearch(arr, mid + 1, r, x);
 	}
 	return -1;
 }
-
+///faz uma inserção ordenada no array
 void insertionSort(int arr[], int n)
 {
 	int i, key, j;
@@ -161,7 +161,7 @@ void insertionSort(int arr[], int n)
 		arr[j + 1] = key;
 	}
 }
-
+///Insere edificio na linked list
 int inserir_edificio(EMPRESA* empresa, char morada[], char nome[], double latitude, double longitude, int id, int preco_m2) {
 	EDIFICIO* e = (EDIFICIO*)malloc(sizeof(EDIFICIO));
 	e->morada = (char*)malloc(sizeof(char) * (strlen(morada) + 1));
@@ -202,7 +202,7 @@ int inserir_edificio(EMPRESA* empresa, char morada[], char nome[], double latitu
 	empresa->num_edificios++;
 	return;
 };
-
+///insere estudio no array estudios, num dado estudio
 int inserir_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos, int m2) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
@@ -261,7 +261,7 @@ int inserir_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos, int m2
 	pcurrent->num_estudios++;
 	insertionSort(pcurrent->estudios, pcurrent->num_estudios);
 }
-
+///insere cliente na linked list clientes, dentro de um estudio, dentro de uma empresa
 int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char nome[], int idade) {
 	CLIENTE* e = (CLIENTE*)malloc(sizeof(CLIENTE));
 	e->id = idCliente;
@@ -350,7 +350,7 @@ int inserir_cliente(EMPRESA* empresa, int id, int idEstudio, int idCliente, char
 
 	}
 }
-
+///Na agenda, insere um evento, com o fim dia e fim mês, e o tipo de evento, se o evento for estadia, calcula os dias de estadia, e calcula o preco. O preco varia consoante o tempo, se for +7 dias há um desconto de 30%, e também varia consoante a altura do ano
 int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, char plataforma[]) {
 	AGENDA* e = (AGENDA*)malloc(sizeof(AGENDA));
 	e->id = idAgenda;
@@ -485,7 +485,7 @@ int inserir_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int id
 
 	}
 }
-
+///remove edificio
 int remover_edificio(EMPRESA* empresa, int id) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
@@ -510,7 +510,7 @@ int remover_edificio(EMPRESA* empresa, int id) {
 	free(pcurrent);
 	empresa->num_edificios--;
 }
-
+///remove estudio
 int remover_estudio(EMPRESA* empresa, int id, int idEstudio) {
 	int index, i;
 	if (empresa->edificio == NULL) {
@@ -528,8 +528,9 @@ int remover_estudio(EMPRESA* empresa, int id, int idEstudio) {
 	}
 	if (empresa->edificio == pcurrent) {
 		index = binarySearch(empresa->edificio->estudios, 0, empresa->edificio->num_estudios - 1, idEstudio);
+
 		if (index == -1) {
-			printf("estudio nao encontrado");
+			printf("estudio nao encontrado\n");
 			return;
 		}
 		if (empresa->edificio->num_estudios == 1) {
@@ -584,7 +585,7 @@ int remover_estudio(EMPRESA* empresa, int id, int idEstudio) {
 		empresa->edificio->num_estudios--;
 	}
 }
-
+///remove cliente
 int remover_cliente(EMPRESA* empresa, int id, int IdEstudio, int idCliente) {
 
 	int index;
@@ -660,7 +661,7 @@ int remover_cliente(EMPRESA* empresa, int id, int IdEstudio, int idCliente) {
 	pcurrent->estudios[index].num_clientes--;
 	return;
 }
-
+///remove evento na agenda
 int remover_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda) {
 
 	int index;
@@ -736,7 +737,7 @@ int remover_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda) {
 	pcurrent->estudios[index].num_agendas--;
 	return;
 }
-
+///edita um edificio, se só quiser mudar um valor, deixar os outros igual ao que quer mudar, NÃO MUDA ID
 int editar_edificio(EMPRESA* empresa, int id, char morada[],char nome[], double latitude, double longitude, int preco_m2) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
@@ -765,7 +766,7 @@ int editar_edificio(EMPRESA* empresa, int id, char morada[],char nome[], double 
 	pcurrent->longitude = longitude;
 	pcurrent->preco_m2 = preco_m2;
 }
-
+///edita um estudio num dado edificio, se só quiser mudar um valor, deixar os outros igual ao que quer mudar, NÃO MUDA ID
 int editar_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos) {
 	int index;
 	if (empresa->edificio == NULL) {
@@ -799,7 +800,7 @@ int editar_estudio(EMPRESA* empresa, int id, int idEstudio, int quartos) {
 	return;
 
 }
-
+///edita um cliente num dado estudio e edificio, se só quiser mudar um valor, deixar os outros igual ao que quer mudar, NÃO MUDA ID
 int editar_cliente(EMPRESA* empresa, int id, int IdEstudio, int idCliente, char nome[], int idade) {
 	int index;
 	if (empresa->edificio == NULL) {
@@ -873,7 +874,7 @@ int editar_cliente(EMPRESA* empresa, int id, int IdEstudio, int idCliente, char 
 	return;
 
 }
-
+///muda a agenda, e re calcula os valores de preco, no caso da mudanca for para estadia
 int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idCliente, char evento[], int data_fim_dia, int data_fim_mes, int data_fim_ano, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, char plataforma[]) {
 	int index;
 	DATA dataInicio = { data_inicio_dia,data_inicio_mes,data_inicio_ano };
@@ -1036,7 +1037,7 @@ int editar_agenda(EMPRESA* empresa, int id, int IdEstudio, int idAgenda, int idC
 		pcurrentcl->preco = 0;
 	}
 }
-
+///print todos os edificios
 int print_edificios(EMPRESA* empresa) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
@@ -1049,7 +1050,7 @@ int print_edificios(EMPRESA* empresa) {
 		pcurrent = pcurrent->next;
 	}
 }
-
+///print todos os estudios num edificio
 int print_estudios(EMPRESA* empresa, int id) {
 	if (empresa->edificio == NULL) {
 		printf("Nao ha edificios\n");
@@ -1082,7 +1083,7 @@ int print_estudios(EMPRESA* empresa, int id) {
 		printf("Id: %d | Numero de quartos: %d | Area: %d\n", pcurrent->estudios[i].id, pcurrent->estudios[i].quartos, empresa->edificio->estudios[i].m2);
 	}
 }
-
+///print todos os clientes num dado estudioo e edificio
 int print_clientes(EMPRESA* empresa, int id, int IdEstudio) {
 	int index;
 	if (empresa->edificio == NULL) {
@@ -1142,7 +1143,7 @@ int print_clientes(EMPRESA* empresa, int id, int IdEstudio) {
 	}
 
 }
-
+///print de todos os eventos na agenda, para um dado estudioo e id
 int print_agenda(EMPRESA* empresa, int id, int IdEstudio) {
 	int index;
 	if (empresa->edificio == NULL) {

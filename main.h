@@ -1,16 +1,17 @@
+
 typedef struct data {
 	int dia;
 	int mes;
 	int ano;
 }DATA;
-
+///informacao sobre o cliente
 typedef struct cliente {
 	int id;
 	char* nome;
 	int idade;
 	struct cliente* next;
 }CLIENTE;
-
+///agenda que recorda os eventos todos, incluindo o id do uttilizador, a data final e inicial, a plataforma usada, o custo desta, caso evento seja estadia, a diferenca de dias, e o evento
 typedef struct agenda {
 	int id;
 	int idUser;
@@ -22,7 +23,7 @@ typedef struct agenda {
 	int diferenca;
 	struct agenda* next;
 }AGENDA;
-
+///informacao total do estudio, incluindo tamanho
 typedef struct estudio {
 	int id;
 	int quartos;
@@ -32,12 +33,7 @@ typedef struct estudio {
 	CLIENTE* clientes; //ll
 	AGENDA* agenda; //ll
 } ESTUDIO;
-
-typedef struct plataforma {
-	char* nome;
-	char* estudios;
-} PLATAFORMA;
-
+///edificio, com a informacao total e o custo por m2 de cada estudio
 typedef struct edificio {
 	char* nome;
 	int preco_m2;
@@ -50,13 +46,14 @@ typedef struct edificio {
 	double longitude;
 	struct edificio * next;
 } EDIFICIO;
-
+/// <summary>
+/// struct empresa, com o num edificios e uma lista ligada de edificios
+/// </summary>
 typedef struct empresa {
 	int num_edificios;
 	EDIFICIO* edificio; //ll
-	PLATAFORMA* plataformas;
 } EMPRESA;
-
+///struct para calculo de numero de estadias/geracao de dinheiro (ex6/7)
 typedef struct Taxa {
 	int moneyCount;
 	int edificio;

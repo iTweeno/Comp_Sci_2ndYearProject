@@ -1,3 +1,5 @@
+///a geracao de relatorios tem a opcao de ser guardada para um ficheiro ou fazer print simplesmente, e ordenacao crescente/decrescente, de num estadias ou profit
+
 #include<stdio.h>
 #include"main.h"
 
@@ -44,14 +46,14 @@ int Relatorios() {
 	return 0;
 };
 
-
+///troca elementos no array
 void swap(int* xp, int* yp)
 {
 	int temp = *xp;
 	*xp = *yp;
 	*yp = temp;
 }
-
+///faz um selectioon sort crescente, se não for inserido type ordena por numero de estadias, se for inserido money no type, ordena pelo que gerou mais dinheiro
 void selectionSortCrescente(TAXA arr[], int n, char type[])
 {
 	int i, j, min_idx;
@@ -77,7 +79,7 @@ void selectionSortCrescente(TAXA arr[], int n, char type[])
 		swap(&arr[min_idx], &arr[i]);
 	}
 }
-
+///Mesmo que funcao anterior, so que decrescente
 void selectionSortDecrescente(TAXA arr[], int n, int type[])
 {
 	int i, j, min_idx;
@@ -103,7 +105,7 @@ void selectionSortDecrescente(TAXA arr[], int n, int type[])
 		swap(&arr[min_idx], &arr[i]);
 	}
 }
-
+///calcula a taxa de ocupacao num estudio numa dada data
 int Taxa_Ocupacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -203,7 +205,7 @@ int Taxa_Ocupacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int d
 		fclose(fp);
 	}
 }
-
+///calcula a taxa de estadia de um edificio numa dada data
 int Taxa_Ocupacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[], char order[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -312,7 +314,7 @@ int Taxa_Ocupacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_dia
 		}
 	}
 }
-
+///calcula a taxa de estadia total numa dada data
 int Taxa_Ocupacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[], char order[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -377,7 +379,7 @@ int Taxa_Ocupacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_me
 	}
 
 }
-
+///calcula a revenue de um estudio numa dada data
 int Taxa_Faturacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -469,7 +471,7 @@ int Taxa_Faturacao_Estudio(EMPRESA* empresa, int idEdificio, int idEstudio, int 
 		fclose(fp);
 	}
 }
-
+///calcula a revenue de um edificio numa dada data
 int Taxa_Faturacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[], char order[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -585,7 +587,7 @@ int Taxa_Faturacao_Edificio(EMPRESA* empresa, int idEdificio, int data_inicio_di
 		}
 	}
 }
-
+///calcula a revenue de todos os edificios numa dada data
 int Taxa_Faturacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_mes, int data_inicio_ano, int data_fim_dia, int data_fim_mes, int data_fim_ano, char type[], char order[]) {
 	DATA inicio = { data_inicio_dia,data_inicio_mes ,data_inicio_ano };
 	DATA fim = { data_fim_dia,data_fim_mes ,data_fim_ano };
@@ -648,5 +650,4 @@ int Taxa_Faturacao_Lote(EMPRESA* empresa, int data_inicio_dia, int data_inicio_m
 			printf("Opcao invalida");
 		}
 	}
-
 }

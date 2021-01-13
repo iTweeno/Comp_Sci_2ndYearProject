@@ -1,0 +1,26 @@
+var ex2__3_8c =
+[
+    [ "binarySearch", "ex2__3_8c.html#a34eda62409e5be674ade1f6e5805bb00", null ],
+    [ "checkIfDatesCoincide", "ex2__3_8c.html#ae1bf399a869789a539aed8df0a6017db", null ],
+    [ "countLeapYears", "ex2__3_8c.html#a7158214dff157c4a3c9fb03553449d68", null ],
+    [ "editar_agenda", "ex2__3_8c.html#aa792ca41d3dc86d97c306ac2fee2ef2e", null ],
+    [ "editar_cliente", "ex2__3_8c.html#ae87139286fc442061806d95565e6a093", null ],
+    [ "editar_edificio", "ex2__3_8c.html#a1cffc56186556c790c53694606ff7d40", null ],
+    [ "editar_estudio", "ex2__3_8c.html#a5bd1c3d9849a7b88ac177c42c1755522", null ],
+    [ "Gestao_Edificios", "ex2__3_8c.html#af0962d350eec8be5c69a5c96f71b947a", null ],
+    [ "getDifference", "ex2__3_8c.html#a6bec782ec00d91818f734b151ae53aa4", null ],
+    [ "inserir_agenda", "ex2__3_8c.html#a984035d32a513205e63f07ca4b7fafe6", null ],
+    [ "inserir_cliente", "ex2__3_8c.html#ab08d74d2cb2e1c7af27c4f66b0107bca", null ],
+    [ "inserir_edificio", "ex2__3_8c.html#ae9d62bea684de56661f9d075753b475d", null ],
+    [ "inserir_estudio", "ex2__3_8c.html#a44a484f777a2d73f44c7f8878dcf34b7", null ],
+    [ "insertionSort", "ex2__3_8c.html#a3fde3e15492d674dbd6caf7c061a2b35", null ],
+    [ "print_agenda", "ex2__3_8c.html#a4d94b7e796b589c0bdcc65e19fff8da0", null ],
+    [ "print_clientes", "ex2__3_8c.html#a535394db6c6cce5de9ec43debd6985b4", null ],
+    [ "print_edificios", "ex2__3_8c.html#aa4012332405e88b87723545ebc54a85c", null ],
+    [ "print_estudios", "ex2__3_8c.html#a6f2a2204b76f64c16ee37cf65826a5fa", null ],
+    [ "remover_agenda", "ex2__3_8c.html#ad8432421a05bbc49bf1f19bcf8056f15", null ],
+    [ "remover_cliente", "ex2__3_8c.html#ab5e087ee52c8b5c3e8acca0b1f5a3fe7", null ],
+    [ "remover_edificio", "ex2__3_8c.html#a190a8eee1152ddaaa150659565b9e0cb", null ],
+    [ "remover_estudio", "ex2__3_8c.html#a1d1e343d7428f07c17f72e1e8841efa9", null ],
+    [ "monthDays", "ex2__3_8c.html#ad98b5bd0f775e90a242952750b96f3d7", null ]
+];

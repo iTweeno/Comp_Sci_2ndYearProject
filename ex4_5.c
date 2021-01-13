@@ -52,7 +52,7 @@ int Ler_Escrever() {
 
 	return 0;
 };
-
+///guarda tudoo o que está dentro das structs para um ficheiro Info.txt excepto a agenda
 int Guardar_Texto_Ficheiro(EMPRESA* empresa) {
 	FILE* pfile = fopen("Info.txt", "w");
 	if (pfile == NULL) {
@@ -76,7 +76,7 @@ int Guardar_Texto_Ficheiro(EMPRESA* empresa) {
 	}
 	fclose(pfile);
 }
-
+///Guarda todos os eventos na agenda para um ficheiro Agenda.txt
 int Guardar_Texto_Agenda(EMPRESA* empresa) {
 	FILE* pfile = fopen("Agenda.txt", "w");
 	if (pfile == NULL) {
@@ -97,7 +97,7 @@ int Guardar_Texto_Agenda(EMPRESA* empresa) {
 	}
 	fclose(pfile);
 }
-
+///Guarda as structs para um ficheiroo binario excepto a agenda
 int Guardar_Texto_Binary(EMPRESA* empresa) {
 	FILE* pfile = fopen("InfoB.bin", "wb");
 	if (pfile == NULL) {
@@ -133,7 +133,7 @@ int Guardar_Texto_Binary(EMPRESA* empresa) {
 	}
 	fclose(pfile);
 }
-
+///guarda a agenda em binario para um ficheiro bin
 int Guardar_Texto_Binary_Agenda(EMPRESA* empresa) {
 	FILE* pfile = fopen("AgendaB.bin", "wb");
 	if (pfile == NULL) {
@@ -168,7 +168,7 @@ int Guardar_Texto_Binary_Agenda(EMPRESA* empresa) {
 	}
 	fclose(pfile);
 }
-
+///Carrega o ficheiro e adiciona á struct
 int Carregar_Ficheiro(EMPRESA* empresa) {
 	FILE* pfile = fopen("Info.txt", "r");
 	if (pfile == NULL) {
@@ -194,7 +194,7 @@ int Carregar_Ficheiro(EMPRESA* empresa) {
 	}
 
 }
-
+///Carrega os eventos e adiciona ás structs
 int Carregar_Ficheiro_Agenda(EMPRESA* empresa) {
 	FILE* pfile = fopen("Agenda.txt", "r");
 	if (pfile == NULL) {
@@ -209,7 +209,7 @@ int Carregar_Ficheiro_Agenda(EMPRESA* empresa) {
 		inserir_agenda(empresa, idEdificio, idEstudio, idAgenda, idUser, evento, data_fim_dia, data_fim_mes, data_fim_ano, data_inicio_dia, data_fim_mes, data_inicio_ano, plataforma);
 	}
 }
-
+///lê o ficheiro em binário e faz print do seu conteudo
 int Ler_Binary(EMPRESA* empresa) {
 	FILE* pfile = fopen("InfoB.bin", "rb");
 	if (pfile == NULL) {
@@ -248,7 +248,7 @@ int Ler_Binary(EMPRESA* empresa) {
 	}
 	fclose(pfile);
 }
-
+///le o ficheiro AgendaB em binario e faz print do output
 int Ler_Binary_Agenda(EMPRESA* empresa) {
 	FILE* pfile = fopen("AgendaB.bin", "rb");
 	if (pfile == NULL) {
