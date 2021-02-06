@@ -1,2 +1,2 @@
-# trabalho
-Trabalho de Prograçação e AED
+# Comp SCI 2nd Year Project
+Grade: 15/20
